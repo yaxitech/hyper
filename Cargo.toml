@@ -39,7 +39,9 @@ want = "0.3"
 # Optional
 
 libc = { version = "0.2", optional = true }
-socket2 = { version = "0.4.7", optional = true, features = ["all"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+socket2 = { version = "0.4.7", features = ["all"] }
 
 [dev-dependencies]
 futures-util = { version = "0.3", default-features = false, features = ["alloc"] }
@@ -100,7 +102,6 @@ runtime = [
     "tokio/time",
 ]
 tcp = [
-    "socket2",
     "tokio/net",
     "tokio/rt",
     "tokio/time",
