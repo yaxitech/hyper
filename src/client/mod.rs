@@ -48,7 +48,7 @@
 //! # fn main () {}
 //! ```
 
-#[cfg(feature = "tcp")]
+#[cfg(all(feature = "tcp", not(target_os = "wasi")))]
 pub use self::connect::HttpConnector;
 
 pub mod connect;

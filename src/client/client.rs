@@ -15,7 +15,7 @@ use super::connect::{self, sealed::Connect, Alpn, Connected, Connection};
 use super::pool::{
     self, CheckoutIsClosedError, Key as PoolKey, Pool, Poolable, Pooled, Reservation,
 };
-#[cfg(feature = "tcp")]
+#[cfg(all(feature = "tcp", not(target_os = "wasi")))]
 use super::HttpConnector;
 use crate::body::{Body, HttpBody};
 use crate::common::{exec::BoxSendFuture, sync_wrapper::SyncWrapper, lazy as hyper_lazy, task, Future, Lazy, Pin, Poll};
@@ -50,7 +50,7 @@ pub struct ResponseFuture {
 
 // ===== impl Client =====
 
-#[cfg(feature = "tcp")]
+#[cfg(all(feature = "tcp", not(target_os = "wasi")))]
 impl Client<HttpConnector, Body> {
     /// Create a new Client with the default [config](Builder).
     ///
@@ -66,7 +66,7 @@ impl Client<HttpConnector, Body> {
     }
 }
 
-#[cfg(feature = "tcp")]
+#[cfg(all(feature = "tcp", not(target_os = "wasi")))]
 impl Default for Client<HttpConnector, Body> {
     fn default() -> Client<HttpConnector, Body> {
         Client::new()
@@ -1350,7 +1350,7 @@ impl Builder {
     }
 
     /// Builder a client with this configuration and the default `HttpConnector`.
-    #[cfg(feature = "tcp")]
+    #[cfg(all(feature = "tcp", not(target_os = "wasi")))]
     pub fn build_http<B>(&self) -> Client<HttpConnector, B>
     where
         B: HttpBody + Send,

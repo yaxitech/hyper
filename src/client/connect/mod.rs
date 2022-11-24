@@ -86,7 +86,14 @@ use ::http::Extensions;
 cfg_feature! {
     #![feature = "tcp"]
 
-    pub use self::http::{HttpConnector, HttpInfo};
+    pub use self::http_info::HttpInfo;
+    mod http_info;
+}
+
+cfg_feature! {
+    #![all(feature = "tcp", not(target_os = "wasi"))]
+
+    pub use self::http::HttpConnector;
 
     pub mod dns;
     mod http;
